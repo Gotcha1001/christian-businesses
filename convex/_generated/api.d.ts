@@ -9,6 +9,7 @@
  */
 
 import type * as businesses from "../businesses.js";
+import type * as likeBusiness from "../likeBusiness.js";
 import type * as users from "../users.js";
 
 import type {
@@ -27,6 +28,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   businesses: typeof businesses;
+  likeBusiness: typeof likeBusiness;
   users: typeof users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;

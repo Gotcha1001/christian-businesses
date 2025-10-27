@@ -18,8 +18,8 @@ export default defineSchema({
     logoUrl: v.string(),
     description: v.string(),
     type: v.string(),
-    likes: v.optional(v.number()), // Made optional for existing data
-    likedBy: v.optional(v.array(v.string())),
+    likes: v.optional(v.number()), // Temporarily optional
+    likedBy: v.optional(v.array(v.string())), // Temporarily optional
 
     // Enhanced contact information
     contact: v.object({
@@ -95,6 +95,7 @@ export default defineSchema({
     .index("by_slug", ["slug"])
     .index("by_type", ["type"])
     .index("by_featured", ["featured"])
+    .index("by_likes", ["likes"]) // Add this index for sorting by likes
     .searchIndex("search_name", {
       searchField: "name",
       filterFields: ["type", "featured"],

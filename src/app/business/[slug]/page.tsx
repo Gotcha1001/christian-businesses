@@ -247,7 +247,7 @@
 
 "use client";
 
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -267,6 +267,7 @@ import {
   Twitter,
   Youtube,
   ExternalLink,
+  Heart,
 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -280,9 +281,26 @@ export default function BusinessPage() {
   });
   const currentUser = useQuery(api.users.get);
 
+  // Likes data and mutation
+  const likesData = useQuery(
+    api.likeBusiness.getLikes,
+    business ? { businessId: business._id } : "skip"
+  );
+  const likeMutation = useMutation(api.likeBusiness.like);
+
   // Check if current user owns this business
   const isOwner =
     currentUser && business && business.userId === currentUser.clerkId;
+
+  const handleLike = () => {
+    if (business) {
+      likeMutation({ businessId: business._id });
+    }
+  };
+
+  const hasLiked = currentUser?.clerkId
+    ? (likesData?.likedBy.includes(currentUser.clerkId) ?? false)
+    : false;
 
   if (business === undefined) {
     return (
@@ -485,6 +503,25 @@ export default function BusinessPage() {
               </div>
             </div>
           )}
+
+          {/* Likes Section */}
+          <div className="flex items-center gap-4 text-purple-300">
+            <Button
+              variant="ghost"
+              onClick={handleLike}
+              className="hover:text-red-400 flex items-center gap-2"
+            >
+              <Heart
+                className="w-6 h-6"
+                fill={hasLiked ? "currentColor" : "none"}
+                stroke="currentColor"
+              />
+              Like
+            </Button>
+            <span className="text-lg font-medium">
+              {likesData?.likes ?? 0} likes
+            </span>
+          </div>
 
           {/* Products Section */}
           {business.products && business.products.length > 0 && (

@@ -41,6 +41,14 @@ export default function Navbar() {
               Feed
             </Link>
           </motion.div>
+          <motion.div /* ... */>
+            <Link
+              href="/top-businesses"
+              className="text-purple-200 hover:text-purple-100 transition-colors duration-200 font-medium"
+            >
+              Top Businesses
+            </Link>
+          </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
